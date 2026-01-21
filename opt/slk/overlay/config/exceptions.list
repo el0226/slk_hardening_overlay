@@ -1,0 +1,8 @@
+# One path per line (relative to the work tree root).
+# SlackBuilds listed here are not edited by the injector.
+#
+# Keep this small; prefer fixing injector patterns or adding narrow exceptions.
+#
+# Example:
+# source/a/foo/foo.SlackBuild
+a/grub/grub.SlackBuild

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Modify this to match the package series you want to build.
+export SERIES_LIST="a ap d l n"
+
+export OVERLAY_ROOT=/opt/slk/overlay
+. $OVERLAY_ROOT/config/vars.sh
+
+set -eu
+
+$OVERLAY_ROOT/tools/make-worktree.sh
+$OVERLAY_ROOT/tools/inject-flags.sh
+$OVERLAY_ROOT/tools/apply-patches.sh
+$OVERLAY_ROOT/tools/sanity-check.sh
+$OVERLAY_ROOT/tools/mklist.sh
+
+for s in $SERIES_LIST ;
+do
+	mkdir -p $TMP/pkgs/$s || exit 1
+	echo "Entering series :: $s"
+
+	cat $BUILDLIST | while read line ;
+	do
+		echo "Building :: $line"
+		cd $WORK_ROOT/$(dirname $line) || exit 1
+
+		chmod +x $(echo $line | xargs basename -a) || exit 1
+		BUILD=1el0226 ./$(echo $line | xargs basename -a)
+
+		if [ "$(echo $?)" != "0" ]; then
+			echo "Build Failure :: $line"
+			echo "Exit Status :: $?"
+			exit
+		else
+			echo "Build Success :: $line"
+			echo "Exit Status :: $?"
+			rm -fv $TMP/pkgs/$s/$(echo $line | xargs basename -a | cut -f1 -d. )*.t?z
+			mv -fv $TMP/$(echo $line | xargs basename -a | cut -f1 -d. )*.t?z $TMP/pkgs/$s/
+			rm -rf $TMP/package-$(echo $line | xargs basename -a | cut -f1 -d. )/
+			echo ""
+		fi
+	done
+
+	sleep 1
+done
