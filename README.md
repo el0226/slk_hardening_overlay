@@ -10,7 +10,7 @@ tools/mklist.sh shell script.  The default is to use the package
 series designated.  The "run" script contains the series list settting
 and should be edited by the user.
 
-# Update the package series in $OVERLAY_ROOT/run 
+- Update the package series in $OVERLAY_ROOT/run 
 - `export SERIES_LIST="a ap d l n"`
 
 * TODO: Define package build lists to drop into builds.
