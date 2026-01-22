@@ -3,8 +3,17 @@
 * Rebuild Slackware Linux from source with hardened compiler flags
 * Originally written and designed with ChatGPT AI aid 
 * Some information below may need updating to match code
-* The "run" script contains the series list settting
-- `export SERIES_LIST="a ap d l n"` :  change me
+
+The build list is in $OVERLAY_ROOT/config/build.lst.  It can be
+created manually.  By default the contents are generated using the
+tools/mklist.sh shell script.  The default is to use the package
+series designated.  The "run" script contains the series list settting
+and should be edited by the user.
+
+# Update the package series in $OVERLAY_ROOT/run 
+- `export SERIES_LIST="a ap d l n"`
+
+* TODO: Define package build lists to drop into builds.
 
 ## Slackware x86_64 hardening overlay (rebase-friendly)
 
